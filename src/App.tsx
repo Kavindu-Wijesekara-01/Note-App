@@ -1,6 +1,6 @@
 import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { Home, Archive, Trash2, Plus, Search, X, Menu, Star, Tag, Palette, Grid, List, Paperclip, LogOut } from 'lucide-react'
+import { Home, Archive, Trash2, Plus, Search, X, Menu, Tag, Palette, Grid, List, Paperclip, LogOut } from 'lucide-react'
 import NoteCard from './components/NoteCard'
 import Login from './components/Login'
 import ProtectedRoute from './components/ProtectedRoute'
