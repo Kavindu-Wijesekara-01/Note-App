@@ -12,7 +12,7 @@ export default function Login() {
     password: '',
     confirmPassword: ''
   })
-  const { login, register } = useAuth() // මේකට AuthContext එකේ signup function එක තියෙනවා බලාගන්න
+  const { login, register } = useAuth()
   const navigate = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,12 +24,21 @@ export default function Login() {
         return
       }
       
-      await register(formData.name, formData.email, formData.password)
+      // FIX: Changed parameter order to match AuthContext
+      const success = await register(formData.email, formData.password, formData.name)
+      if (success) {
+        navigate('/')
+      } else {
+        alert('Registration failed. Email may already exist.')
+      }
     } else {
-      await login(formData.email, formData.password)
+      const success = await login(formData.email, formData.password)
+      if (success) {
+        navigate('/')
+      } else {
+        alert('Login failed. Please check your credentials.')
+      }
     }
-    
-    navigate('/')
   }
 
   return (
