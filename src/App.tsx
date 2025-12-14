@@ -2,6 +2,7 @@ import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { Home, Archive, Trash2, Plus, Search, X, Menu, Tag, Palette, Grid, List, Paperclip, LogOut } from 'lucide-react'
 import NoteCard from './components/NoteCard'
+import NotePreview from './components/NotePreview'
 import Login from './components/Login'
 import ProtectedRoute from './components/ProtectedRoute'
 import { useAuth } from './contexts/AuthContext'
@@ -33,6 +34,8 @@ type ViewMode = 'grid' | 'list'
 function App() {
   const [notes, setNotes] = useState<Note[]>([])
   const [showEditor, setShowEditor] = useState(false)
+  const [showPreview, setShowPreview] = useState(false)
+  const [previewNote, setPreviewNote] = useState<Note | null>(null)
   const [editingNote, setEditingNote] = useState<Note | null>(null)
   const [search, setSearch] = useState('')
   const [newNote, setNewNote] = useState({ title: '', content: '', color: 'white', tags: '' })
@@ -198,6 +201,11 @@ function App() {
     ))
   }
 
+  const previewNoteFunc = (note: Note) => {
+    setPreviewNote(note)
+    setShowPreview(true)
+  }
+
   const editNote = (note: Note) => {
     setEditingNote(note)
     setNewNote({ 
@@ -287,7 +295,6 @@ function App() {
         </button>
         <h1 className="text-xl font-bold text-gray-800">Notes</h1>
         <div className="flex items-center space-x-2">
-          
           <button onClick={() => setShowEditor(true)} className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
             <Plus className="h-5 w-5" />
           </button>
@@ -465,6 +472,7 @@ function App() {
                           onDelete={deleteNote}
                           onArchive={archiveNote}
                           onPin={togglePin}
+                          onPreview={previewNoteFunc}
                           onEdit={editNote}
                           onDuplicate={duplicateNote}
                           onRemoveFile={removeFileFromNote}
@@ -519,6 +527,7 @@ function App() {
                           onDelete={deleteNote}
                           onArchive={archiveNote}
                           onPin={togglePin}
+                          onPreview={previewNoteFunc}
                           onEdit={editNote}
                           onDuplicate={duplicateNote}
                           onRemoveFile={removeFileFromNote}
@@ -599,7 +608,6 @@ function App() {
         {/* Footer */}
         <footer className="mt-12 pt-6 border-t border-gray-200">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            
             <div className="flex items-center space-x-6">
               <span className="text-sm text-gray-500">
                 {notes.length} total notes • {user.email}
@@ -608,7 +616,7 @@ function App() {
 
             <div className="text-gray-600 text-sm flex items-center">
               <p className="font-medium text-gray-800">Notes App - </p>
-              <p className="ml-1">Devoloped By Kavindu Wijesekara</p>
+              <p className="ml-1">Developed By Kavindu Wijesekara</p>
             </div>
             
             <div className="text-xs text-gray-500">
@@ -617,6 +625,26 @@ function App() {
           </div>
         </footer>
       </div>
+
+      {/* Note Preview Modal */}
+      {showPreview && previewNote && (
+        <NotePreview
+          note={previewNote}
+          onClose={() => {
+            setShowPreview(false)
+            setPreviewNote(null)
+          }}
+          onEdit={(note) => {
+            setShowPreview(false)
+            setPreviewNote(null)
+            editNote(note)
+          }}
+          onDelete={deleteNote}
+          onArchive={archiveNote}
+          onPin={togglePin}
+          onDuplicate={duplicateNote}
+        />
+      )}
 
       {/* Note Editor Modal */}
       {showEditor && (

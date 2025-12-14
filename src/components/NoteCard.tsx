@@ -1,4 +1,4 @@
-import { Archive, Trash2, Star, MoreVertical, Copy, Edit, Tag, Paperclip, X, FileText, Image as ImageIcon, Download } from 'lucide-react'
+import { Archive, Trash2, Star, MoreVertical, Copy, Edit, Tag, Paperclip, X, FileText, Image, Download } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 
 interface NoteFile {
@@ -28,13 +28,14 @@ interface NoteCardProps {
   onDelete: (id: string) => void
   onArchive: (id: string) => void
   onPin: (id: string) => void
+  onPreview: (note: Note) => void
   onEdit: (note: Note) => void
   onDuplicate: (note: Note) => void
   onRemoveFile: (noteId: string, fileId: string) => void
   viewMode?: 'grid' | 'list'
 }
 
-export default function NoteCard({ note, onDelete, onArchive, onPin, onEdit, onDuplicate, onRemoveFile, viewMode = 'grid' }: NoteCardProps) {
+export default function NoteCard({ note, onDelete, onArchive, onPin, onPreview, onEdit, onDuplicate, onRemoveFile, viewMode = 'grid' }: NoteCardProps) {
   const [showMenu, setShowMenu] = useState(false)
   const [showFilePreview, setShowFilePreview] = useState(false)
   const [selectedFile, setSelectedFile] = useState<NoteFile | null>(null)
@@ -114,7 +115,7 @@ export default function NoteCard({ note, onDelete, onArchive, onPin, onEdit, onD
     <>
       <div 
         className={`${colors[note.color] || 'bg-white'} ${cardClasses} rounded-xl border border-gray-200 hover:border-gray-300 transition-all duration-300 cursor-pointer relative group`}
-        onClick={() => onEdit(note)}
+        onClick={() => onPreview(note)}
       >
         {/* Pin indicator */}
         {note.isPinned && (
@@ -147,7 +148,7 @@ export default function NoteCard({ note, onDelete, onArchive, onPin, onEdit, onD
                     <div className="flex items-center gap-3 flex-1 min-w-0">
                       {file.type.startsWith('image/') ? (
                         <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <ImageIcon className="h-4 w-4 text-blue-600" />
+                          <Image className="h-4 w-4 text-blue-600" />
                         </div>
                       ) : (
                         <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -168,7 +169,7 @@ export default function NoteCard({ note, onDelete, onArchive, onPin, onEdit, onD
                         className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
                         title="Preview"
                       >
-                        <ImageIcon className="h-4 w-4 text-gray-600" />
+                        <Image className="h-4 w-4 text-gray-600" />
                       </button>
                       <button
                         onClick={(e) => {
@@ -187,7 +188,7 @@ export default function NoteCard({ note, onDelete, onArchive, onPin, onEdit, onD
                   <button 
                     onClick={(e) => {
                       e.stopPropagation()
-                      onEdit(note)
+                      onPreview(note)
                     }}
                     className="text-sm text-blue-600 hover:text-blue-800 pl-3 transition-colors"
                   >
@@ -327,7 +328,7 @@ export default function NoteCard({ note, onDelete, onArchive, onPin, onEdit, onD
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 {selectedFile.type.startsWith('image/') ? (
                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <ImageIcon className="h-5 w-5 text-blue-600" />
+                    <Image className="h-5 w-5 text-blue-600" />
                   </div>
                 ) : (
                   <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
