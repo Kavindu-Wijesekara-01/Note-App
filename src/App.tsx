@@ -293,7 +293,7 @@ function App() {
         <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
           <Menu className="h-6 w-6 text-gray-700" />
         </button>
-        <h1 className="text-xl font-bold text-gray-800">Notes</h1>
+        <h1 className="text-xl font-bold text-gray-800">NoteSync</h1>
         <div className="flex items-center space-x-2">
           <button onClick={() => setShowEditor(true)} className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
             <Plus className="h-5 w-5" />
@@ -316,7 +316,9 @@ function App() {
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-800 hidden lg:block">Notes</h1>
+          <h1 className="text-2xl font-bold text-gray-900 tracking-tight leading-tight">
+            NoteSync
+          </h1>
           
           {/* User Info */}
           <div className="mt-4 p-3 bg-gray-100 rounded-lg flex items-center space-x-3">
